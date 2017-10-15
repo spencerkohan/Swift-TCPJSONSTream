@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EventEmitter",
+        "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/EventEmitter",
+        "state": {
+          "branch": "master",
+          "revision": "20479296c2d5a087d2512244d4dd090d90381339",
+          "version": null
+        }
+      },
+      {
+        "package": "TCP",
+        "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/TCP",
+        "state": {
+          "branch": "master",
+          "revision": "899e440a2c4a0fb3cb8ebd49e752988c990f973f",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
