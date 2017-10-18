@@ -54,7 +54,7 @@ public extension TCP.Connection {
     
     func packet(from data: Data) -> Data {
         var signature : UInt16 = UInt16(206)
-        var byteLength : UInt32 = UInt32(data.count) + 6
+        var byteLength : UInt32 = UInt32(data.count)
         let startByte = Data(buffer: UnsafeBufferPointer(start: &signature, count: 1))
         let length = Data(buffer: UnsafeBufferPointer(start: &byteLength, count: 1))
         let packet = startByte + length + data
