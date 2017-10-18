@@ -35,10 +35,8 @@ public struct JSONStreamParser {
     }
     
     mutating func emitObject() {
-        
         self.events.didDetectObject.emit(currentObjectData)
         reset()
-        
     }
     
     mutating func emitInvalidChunk() {
@@ -101,6 +99,10 @@ public struct JSONStreamParser {
         
         
         if stack.count == 0 && !currentObjectData.isEmpty {
+            guard let json = try? JSONSerialization.jsonObject(with: currentObjectData, options: [.allowFragments]) else {
+                emitInvalidChunk()
+                return
+            }
             emitObject()
         }
         

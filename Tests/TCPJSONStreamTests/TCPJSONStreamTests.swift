@@ -42,38 +42,28 @@ class TCPJSONStreamTests: XCTestCase {
         
         let server = Server(port: 3001)
         _ = server.events.clientConnected.on { client in
-            
+            print("!client connected")
             client.sendJSON(object:["x":1])
             client.sendJSON(object:["y":2])
-            
             _ = client.events.dataReceived.on { data in
-                
+                print("SERVER RECEIVED:")
                 guard let string = String(data:data, encoding:.utf8) else {
+                    print("ERR!")
                     return
                 }
-                
-                print("SERVER RECEIVED:")
                 print(string)
-                
-                
                 expectation.fulfill()
-                
             }
-            
-            
         }
         
         
         let client = Client(host: "localhost", port: 3001)
         _ = client.didReceiveJsonData.on { data in
-            
+            print("CLIENT RECEIVED:")
             guard let string = String(data:data, encoding:.utf8) else {
                 return
             }
-            
-            print("CLIENT RECEIVED:")
             print(string)
-            
         }
         
         _ = client.events.didOpen.on {
@@ -83,8 +73,7 @@ class TCPJSONStreamTests: XCTestCase {
         server.listen()
         client.open {}
 
-         waitForExpectations(timeout: 100) {_ in}
-        
+        waitForExpectations(timeout: 100) {_ in}
         
     }
 }

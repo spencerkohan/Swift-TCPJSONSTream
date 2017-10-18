@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "EventEmitter",
-        "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/EventEmitter",
+        "repositoryURL": "https://github.com/spencerkohan/Swift-EventEmitter",
         "state": {
           "branch": "master",
-          "revision": "20479296c2d5a087d2512244d4dd090d90381339",
+          "revision": "e522d030c51d465c2df77e9c666cefe480f973e9",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/TCP",
         "state": {
           "branch": "master",
-          "revision": "899e440a2c4a0fb3cb8ebd49e752988c990f973f",
+          "revision": "2c9c08534f3695c74c7d99653b5cef26378b68f4",
           "version": null
         }
       }
