@@ -36,17 +36,29 @@ extension Data {
         }
         return Data(bytesCopy)
     }
+    func printBytes() {
+        let bytes : [UInt8] = self.map { return $0 }
+        print("==============")
+        let str = String(data: self, encoding: .utf8)
+        print("UTF8: \(str ?? "nil")")
+        print("data: \(self)")
+        print("--------------")
+        for byte in bytes {
+            print(byte)
+        }
+        print("==============")
+    }
 }
 
 public extension TCP.Connection {
     
     func packet(from data: Data) -> Data {
-        var signature : UInt16 = 206
+        var signature : UInt16 = UInt16(206)
         var byteLength : UInt32 = UInt32(data.count) + 6
-        var packet = Data()
         let startByte = Data(buffer: UnsafeBufferPointer(start: &signature, count: 1))
-        let length = Data(buffer: UnsafeBufferPointer(start: &byteLength, count: 1))        
-        return startByte.swapped + length.swapped + data
+        let length = Data(buffer: UnsafeBufferPointer(start: &byteLength, count: 1))
+        let packet = startByte + length + data
+        return packet
     }
     
     public func sendJSON<T>(object:T) where T: Encodable {

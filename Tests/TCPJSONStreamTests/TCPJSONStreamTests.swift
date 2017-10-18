@@ -44,10 +44,10 @@ class TCPJSONStreamTests: XCTestCase {
         _ = server.events.clientConnected.on { client in
             print("!client connected")
             client.sendJSON(object:["x":1])
-            client.sendJSON(object:["y":2])
+            // client.sendJSON(object:["y":2])
             _ = client.events.dataReceived.on { data in
                 print("SERVER RECEIVED:")
-                guard let string = String(data:data, encoding:.utf8) else {
+                guard let string = String(data:data[6...], encoding:.utf8) else {
                     print("ERR!")
                     return
                 }
