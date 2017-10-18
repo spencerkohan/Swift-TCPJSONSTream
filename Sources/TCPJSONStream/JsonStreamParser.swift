@@ -22,6 +22,9 @@ public struct JSONStreamParser {
     
     public mutating func consume(data: Data) {
         guard let dataString = String(data:data, encoding: .utf8) else {
+            if data.count > 0 {
+                consume(data: data[1...])
+            }
             return
         }
         for char in dataString {
