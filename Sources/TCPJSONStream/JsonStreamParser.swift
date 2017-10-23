@@ -20,17 +20,50 @@ public struct JSONStreamParser {
     var escaping = false
     var stack = [Character]()
     
-    public mutating func consume(data: Data) {
-        guard let dataString = String(data:data, encoding: .utf8) else {
-            if data.count > 0 {
-                consume(data: data[1...])
-            }
-            return
-        }
-        for char in dataString {
-            consume(character: char)
-        }
+    enum State {
+        case parsingHeader
+        case parsingObject
     }
+    var state : State = .parsingHeader
+    
+    var dataStream : Data = Data()
+    
+    mutating func parse(header:Data) {
+        let length : UInt32  = Data(header[2...]).withUnsafeBytes { (ptr: UnsafePointer<UInt32>) -> UInt32 in
+            return ptr.pointee
+        }
+        currentPacketLength = Int(length)
+    }
+    
+    var currentPacketLength : Int = 0
+    
+    public mutating func consume(data: Data) {
+        
+        dataStream.append(data)
+        
+        if state == .parsingHeader {
+            if dataStream.count < 6 {
+                return
+            }
+            let header = Data(dataStream[..<6])
+            dataStream = Data(dataStream[6...])
+            parse(header: header)
+        }
+        
+        if dataStream.count >= currentPacketLength {
+            let packetData = Data(dataStream[..<currentPacketLength])
+            dataStream = Data(dataStream[currentPacketLength...])
+            guard let dataString = String(data:data, encoding: .utf8) else {
+                return
+            }
+            for char in dataString {
+                consume(character: char)
+            }
+        }
+        
+    }
+    
+    
     
     mutating func reset() {
         self.currentObjectData = Data()

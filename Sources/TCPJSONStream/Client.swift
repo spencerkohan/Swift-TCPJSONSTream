@@ -52,7 +52,7 @@ extension Data {
 
 public extension TCP.Connection {
     
-    func packet(from data: Data) -> Data {
+    static func packet(from data: Data) -> Data {
         var signature : UInt16 = UInt16(206)
         var byteLength : UInt32 = UInt32(data.count)
         let startByte = Data(buffer: UnsafeBufferPointer(start: &signature, count: 1))
@@ -63,12 +63,12 @@ public extension TCP.Connection {
     
     public func sendJSON<T>(object:T) where T: Encodable {
         guard let jsonData = try? JSONEncoder().encode(object) else { return }
-        self.send(data: packet(from:jsonData))
+        self.send(data: TCP.Connection.packet(from:jsonData))
     }
     
     public func sendJSON(record: Any) {
         guard let jsonData = try? JSONSerialization.data(withJSONObject: record) else { return }
-        self.send(data: packet(from:jsonData))
+        self.send(data: TCP.Connection.packet(from:jsonData))
     }
     
 }

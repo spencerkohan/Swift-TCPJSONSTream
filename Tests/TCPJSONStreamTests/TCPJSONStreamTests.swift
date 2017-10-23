@@ -16,6 +16,20 @@ class TCPJSONStreamTests: XCTestCase {
         ("testServerClient", testServerClient),
     ]
     
+    func testParsePacketHeader() {
+        
+        let client = Client(host:"", port:0)
+        
+        let validJson = "{\"x\":1}".data(using: .utf8)!
+        
+        let packet = Client.packet(from:validJson)
+        var parser = JSONStreamParser()
+        parser.parse(header:packet[..<6])
+        
+        XCTAssert(parser.currentPacketLength == 7)
+        
+    }
+    
     func testStreamParser() {
         
         var parser = JSONStreamParser()
@@ -30,8 +44,9 @@ class TCPJSONStreamTests: XCTestCase {
 {"x":1}{"abc":["a", "b", {"c":1}]}
 """.data(using: .utf8)
         
-        parser.consume(data:validJson ?? Data())
+        parser.consume(data:Client.packet(from:validJson ?? Data()))
         
+        XCTAssert(parser.currentPacketLength == 34)
         
         
     }
