@@ -51,6 +51,33 @@ class TCPJSONStreamTests: XCTestCase {
         
     }
     
+    func testStreamParserMultiplePackets() {
+        
+        var parser = JSONStreamParser()
+        
+        _ = parser.events.didDetectObject.on { objectData in
+            let string = String(data:objectData, encoding: .utf8)
+            print("did detect object:")
+            print(string ?? "")
+        }
+        
+        let data1 = """
+{"x":1}
+""".data(using: .utf8)!
+        let data2 = """
+[{"x":1},{"y":2},[2, 3, 4]]
+""".data(using: .utf8)!
+        
+        var packets = Client.packet(from: data1)
+        packets.append(Client.packet(from: data2))
+        
+        parser.consume(data:packets)
+        
+        XCTAssert(parser.currentPacketLength == 27)
+        
+        
+    }
+    
     func testServerClient() {
         
         let expectation = self.expectation(description: "Server")

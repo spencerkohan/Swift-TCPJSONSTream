@@ -48,17 +48,27 @@ public struct JSONStreamParser {
             let header = Data(dataStream[..<6])
             dataStream = Data(dataStream[6...])
             parse(header: header)
+            state = .parsingObject
         }
         
         if dataStream.count >= currentPacketLength {
             let packetData = Data(dataStream[..<currentPacketLength])
             dataStream = Data(dataStream[currentPacketLength...])
-            guard let dataString = String(data:data, encoding: .utf8) else {
+            guard let dataString = String(data:packetData, encoding: .utf8) else {
                 return
             }
+            stack = []
+            currentObjectData = Data()
             for char in dataString {
                 consume(character: char)
             }
+            state = .parsingHeader
+        }
+        
+        if dataStream.count > 0 {
+            let stream = dataStream
+            dataStream = Data()
+            consume(data:stream)
         }
         
     }
@@ -96,20 +106,14 @@ public struct JSONStreamParser {
             self.escaping = true
             return
         case "{":
-            if stack.count == 0 && !currentObjectData.isEmpty {
+            if stack.count == 0 && currentObjectData.count > 1 {
                 emitInvalidChunk()
-            }
-            if let charData = charString.data(using: .utf8) {
-                currentObjectData += charData
             }
             stack += [character]
             break
         case "[":
-            if stack.count == 0 && !currentObjectData.isEmpty {
+            if stack.count == 0 && currentObjectData.count > 1 {
                 emitInvalidChunk()
-            }
-            if let charData = charString.data(using: .utf8) {
-                currentObjectData += charData
             }
             stack += [character]
             break
@@ -135,6 +139,9 @@ public struct JSONStreamParser {
         
         
         if stack.count == 0 && !currentObjectData.isEmpty {
+            guard let dataString = String(data:currentObjectData, encoding: .utf8) else {
+                return
+            }
             guard let json = try? JSONSerialization.jsonObject(with: currentObjectData, options: [.allowFragments]) else {
                 emitInvalidChunk()
                 return
