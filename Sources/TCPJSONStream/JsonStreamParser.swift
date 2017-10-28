@@ -51,7 +51,6 @@ public struct JSONStreamParser {
             state = .parsingObject
         }
         
-        var hasParsedPacket : Bool = false
         if dataStream.count >= currentPacketLength {
             let packetData = Data(dataStream[..<currentPacketLength])
             dataStream = Data(dataStream[currentPacketLength...])
@@ -64,14 +63,14 @@ public struct JSONStreamParser {
                 consume(character: char)
             }
             state = .parsingHeader
-            hasParsedPacket = true
+            if dataStream.count > 0 {
+                let stream = dataStream
+                dataStream = Data()
+                consume(data:stream)
+            }
         }
         
-        if dataStream.count > 0 && hasParsedPacket {
-            let stream = dataStream
-            dataStream = Data()
-            consume(data:stream)
-        }
+
         
     }
     
