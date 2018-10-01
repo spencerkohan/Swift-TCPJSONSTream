@@ -140,10 +140,10 @@ public struct JSONStreamParser {
         
         
         if stack.count == 0 && !currentObjectData.isEmpty {
-            guard let dataString = String(data:currentObjectData, encoding: .utf8) else {
+            guard let _ = String(data:currentObjectData, encoding: .utf8) else {
                 return
             }
-            guard let json = try? JSONSerialization.jsonObject(with: currentObjectData, options: [.allowFragments]) else {
+            guard let _ = try? JSONSerialization.jsonObject(with: currentObjectData, options: [.allowFragments]) else {
                 emitInvalidChunk()
                 return
             }

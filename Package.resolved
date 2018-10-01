@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/spencerkohan/Swift-EventEmitter",
         "state": {
           "branch": "master",
-          "revision": "e522d030c51d465c2df77e9c666cefe480f973e9",
+          "revision": "eebde4c3c96a370e0eec58a136334f11fe0cd0b0",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/TCP",
         "state": {
           "branch": "master",
-          "revision": "21115f5b7fdc3b6d9ad81c514a9cf1313ddda33b",
+          "revision": "f15bf9163650a1009f3c3e13b4249a43efbee0ef",
           "version": null
         }
       }
