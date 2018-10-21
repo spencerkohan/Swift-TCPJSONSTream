@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: localModulesPath("TCP"), .branch("master")),
+        .package(url: "https://github.com/spencerkohan/Swift-TCP", .branch("master")),
         .package(url: "https://github.com/spencerkohan/Swift-EventEmitter", .branch("master")),
     ],
     targets: [

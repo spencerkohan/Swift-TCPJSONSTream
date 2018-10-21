@@ -12,7 +12,7 @@
       },
       {
         "package": "TCP",
-        "repositoryURL": "/Users/spencerkohan/Projects/Personal/SwiftModules/TCP",
+        "repositoryURL": "https://github.com/spencerkohan/Swift-TCP",
         "state": {
           "branch": "master",
           "revision": "f15bf9163650a1009f3c3e13b4249a43efbee0ef",
